@@ -15,16 +15,17 @@ class RahasadeV2:
         self.naytto = pygame.display.set_mode((self.leveys, self.korkeus))
         self.kello = pygame.time.Clock()
 
+        graphics_path = Path(__file__).parents[1] / "graphics"
+        font_file = graphics_path / "PressStart2P-vaV7.ttf"
         self.pelaaja = pygame.sprite.GroupSingle()
         self.pelaaja.add(Pelaaja(self.leveys, self.korkeus))
         self.kolikot = pygame.sprite.Group()
         self.hirviot = pygame.sprite.Group()
-        self.fontti = pygame.font.SysFont("Arial", 30)
-        self.pieni_fontti = pygame.font.SysFont("Arial", 24)
+        self.fontti = pygame.font.Font(font_file, 30)
+        self.pieni_fontti = pygame.font.Font(font_file, 13)
         self.peli_paalla = False
         self.alkuvalikko = True
         self.pisteet = 0
-        graphics_path = Path(__file__).parents[1] / "graphics"
         self.sky = pygame.image.load(graphics_path / "sky.png")
         self.sky = pygame.transform.scale(self.sky, (640,int(100*6.4)))
         self.ground = pygame.image.load(graphics_path / "ground.png")
@@ -81,7 +82,7 @@ class RahasadeV2:
         self.kolikot.draw(self.naytto)
         self.hirviot.draw(self.naytto)
         pisteet = self.pieni_fontti.render(f"Pisteet: {self.pisteet}", True, (0, 0, 240))
-        self.naytto.blit(pisteet, (self.leveys - 140, 10))
+        self.naytto.blit(pisteet, (self.leveys - 180, 10))
         pygame.display.flip()
 
     def piirra_alkuvalikko(self):
@@ -89,7 +90,7 @@ class RahasadeV2:
         otsikko = self.fontti.render("RahasadeV2", True, (255, 0, 180))
         kuvaus = "Kerää kolikkoja ja väistele hirviöitä."
         ohje = ["Komennot:","Liiku vasemmalle = vasen nuolinäppäin",
-                "Liiku oikealle = vasen nuolinäppäin", "Hyppää = välilyönti"]
+                "Liiku oikealle = oikea nuolinäppäin", "Hyppää = välilyönti"]
         self.naytto.blit(otsikko, ((self.leveys - otsikko.get_width())/2, 50))
         kuvausteksti = self.pieni_fontti.render(kuvaus, True, (255, 0, 180))
         self.naytto.blit(kuvausteksti, (100, 150))
@@ -103,7 +104,7 @@ class RahasadeV2:
     def piirra_valikko(self):
         self.naytto.fill((0, 0, 0))
         pisteet = self.fontti.render(f"Pisteesi: {self.pisteet}", True, (255, 0, 180))
-        uusi_peli = self.fontti.render("Aloita uusi peli painamalla enter!", True, (255, 0, 180))
+        uusi_peli = self.pieni_fontti.render("Aloita uusi peli painamalla enter!", True, (255, 0, 180))
         self.naytto.blit(pisteet, ((self.leveys - pisteet.get_width())/2, 100))
         self.naytto.blit(uusi_peli, ((self.leveys - uusi_peli.get_width())/2, 200))
         pygame.display.flip()
