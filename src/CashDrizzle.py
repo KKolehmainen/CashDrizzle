@@ -2,6 +2,10 @@ from pathlib import Path
 from random import randint, choice
 import pygame
 
+from player import Pelaaja
+from coin import Kolikko
+from monster import Hirvio
+
 class RahasadeV2:
     def __init__(self):
         pygame.init()
@@ -114,89 +118,6 @@ class RahasadeV2:
             self.hirviot.empty()
             self.pelaaja.empty()
             self.pelaaja.add(Pelaaja(self.leveys, self.korkeus))
-
-
-class Pelaaja(pygame.sprite.Sprite):
-    def __init__(self, leveys: int, korkeus: int):
-        super().__init__()
-        self.leveys = leveys
-        self.korkeus = korkeus
-        graphics_path = Path(__file__).parents[1] / "graphics"
-        self.image = pygame.image.load(graphics_path / "robo.png")
-        self.image = pygame.transform.rotozoom(self.image,0,2)
-        self.rect = self.image.get_rect(midbottom=(leveys / 2, korkeus-int(10*6.4)))
-        self.nopeus = 10
-        self.painovoima = 0
-    
-    def tapahtumat(self):
-        napit = pygame.key.get_pressed()
-        if napit[pygame.K_RIGHT] and self.rect.right <= self.leveys:
-            self.rect.x += self.nopeus
-        if napit[pygame.K_LEFT] and self.rect.left >= 0:
-            self.rect.x -= self.nopeus
-        if napit[pygame.K_SPACE] and self.rect.bottom >= self.korkeus-int(10*6.4):
-            self.painovoima = -20
-
-    def putoa(self):
-        self.painovoima += 1
-        self.rect.y += self.painovoima
-        if self.rect.bottom >= self.korkeus-int(10*6.4):
-            self.rect.bottom = self.korkeus-int(10*6.4)
-
-    def update(self):
-        self.tapahtumat()
-        self.putoa()
-
-
-class Kolikko(pygame.sprite.Sprite):
-    def __init__(self, leveys: int, korkeus: int, nopeus: int):
-        super().__init__()
-        self.leveys = leveys
-        self.korkeus = korkeus
-        graphics_path = Path(__file__).parents[1] / "graphics"
-        self.image = pygame.image.load(graphics_path / "coin.png")
-        self.image = pygame.transform.rotozoom(self.image,0,2)
-        self.rect = self.image.get_rect()
-        self.rect.bottom = 0
-        self.rect.right = randint(self.image.get_width(), self.leveys)
-        self.nopeus = nopeus
-
-    def putoa(self):
-        self.rect.y += self.nopeus
-        if self.rect.top >= self.korkeus:
-            self.kill()
-
-    def update(self):
-        self.putoa()
-
-    
-class Hirvio(pygame.sprite.Sprite):
-    def __init__(self, leveys: int, korkeus: int, nopeus: int):
-        super().__init__()
-        self.leveys = leveys
-        self.korkeus = korkeus
-        graphics_path = Path(__file__).parents[1] / "graphics"
-        self.image = pygame.image.load(graphics_path / "monster.png")
-        self.image = pygame.transform.rotozoom(self.image,0,3.5)
-        self.rect = self.image.get_rect()
-        self.rect.bottom = 0
-        self.rect.right = randint(self.image.get_width(), self.leveys)
-        self.nopeus = nopeus
-        self.suunta = choice([-1, 1])
-
-    def putoa(self):
-        self.rect.y += self.nopeus
-        if self.rect.bottom >= self.korkeus-int(10*6.4):
-            self.rect.bottom = self.korkeus-int(10*6.4)
-            self.liiku(self.suunta * self.nopeus / 2)
-    
-    def liiku(self, nopeus: int):
-        self.rect.x += nopeus
-        if self.rect.right <= 0 or self.rect.left >= self.leveys:
-            self.kill()
-
-    def update(self):
-        self.putoa()
 
 if __name__ == "__main__":
     RahasadeV2()
