@@ -2,23 +2,23 @@ from pathlib import Path
 from random import randint
 import pygame
 
-class Kolikko(pygame.sprite.Sprite):
-    def __init__(self, leveys: int, korkeus: int, nopeus: int):
+class Coin(pygame.sprite.Sprite):
+    def __init__(self, width: int, height: int, velocity: int):
         super().__init__()
-        self.leveys = leveys
-        self.korkeus = korkeus
+        self.width = width
+        self.height = height
         graphics_path = Path(__file__).parents[1] / "graphics"
         self.image = pygame.image.load(graphics_path / "coin.png")
         self.image = pygame.transform.rotozoom(self.image,0,2)
         self.rect = self.image.get_rect()
         self.rect.bottom = 0
-        self.rect.right = randint(self.image.get_width(), self.leveys)
-        self.nopeus = nopeus
+        self.rect.right = randint(self.image.get_width(), self.width)
+        self.velocity = velocity
 
-    def putoa(self):
-        self.rect.y += self.nopeus
-        if self.rect.top >= self.korkeus:
+    def fall(self):
+        self.rect.y += self.velocity
+        if self.rect.top >= self.height:
             self.kill()
 
     def update(self):
-        self.putoa()
+        self.fall()
