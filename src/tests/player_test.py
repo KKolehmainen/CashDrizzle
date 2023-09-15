@@ -2,7 +2,7 @@ import unittest
 from player import Player
 import pygame
 
-class Testplayer(unittest.TestCase):
+class TestPlayer(unittest.TestCase):
     def test_player_cannot_go_left_of_screen(self):
         player = Player(640, 480)
         player.move_left(1000)
