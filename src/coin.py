@@ -15,10 +15,7 @@ class Coin(pygame.sprite.Sprite):
         self.rect.right = randint(self.image.get_width(), self.width)
         self.velocity = velocity
 
-    def fall(self):
+    def update(self):
         self.rect.y += self.velocity
         if self.rect.top >= self.height:
             self.kill()
-
-    def update(self):
-        self.fall()

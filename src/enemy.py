@@ -16,7 +16,7 @@ class Enemy(pygame.sprite.Sprite):
         self.velocity = velocity
         self.direction = choice([-1, 1])
 
-    def fall(self):
+    def update(self):
         self.rect.y += self.velocity
         if self.rect.bottom >= self.height-int(10*6.4):
             self.rect.bottom = self.height-int(10*6.4)
@@ -26,6 +26,3 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.x += velocity
         if self.rect.right <= 0 or self.rect.left >= self.width:
             self.kill()
-
-    def update(self):
-        self.fall()
