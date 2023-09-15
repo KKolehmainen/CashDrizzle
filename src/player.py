@@ -23,12 +23,14 @@ class Player(pygame.sprite.Sprite):
             self.jump()
 
     def move_right(self, velocity: int):
-        if self.rect.right <= self.width:
-            self.rect.x += velocity
+        self.rect.x += velocity
+        if self.rect.right >= self.width:
+            self.rect.right = self.width
 
     def move_left(self, velocity: int):
-        if self.rect.left >= 0:
-            self.rect.x -= velocity
+        self.rect.x -= velocity
+        if self.rect.left <= 0:
+            self.rect.left = 0
 
     def jump(self):
         if self.rect.bottom >= self.height-int(10*6.4):
